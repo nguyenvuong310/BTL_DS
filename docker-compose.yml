@@ -9,11 +9,14 @@ services:
       - "8787:8787"
     networks:
       - dask-network
+
   worker1:
     image: dask-image
     command: "dask worker tcp://scheduler:8786"
     networks:
       - dask-network
+    depends_on:
+      - scheduler
     deploy:
       resources:
         limits:
@@ -25,6 +28,8 @@ services:
     command: "dask worker tcp://scheduler:8786"
     networks:
       - dask-network
+    depends_on:
+      - scheduler
     deploy:
       resources:
         limits:
