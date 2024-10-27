@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  scheduler:
+    image: dask-image
+    command: "dask scheduler"
+    ports:
+      - "8786:8786"
+      - "8787:8787"
+    networks:
+      - dask-network
+  worker1:
+    image: dask-image
+    command: "dask worker tcp://scheduler:8786"
+    networks:
+      - dask-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "4G"
+
+  worker2:
+    image: dask-image
+    command: "dask worker tcp://scheduler:8786"
+    networks:
+      - dask-network
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "4G"
+
+networks:
+  dask-network:
+    driver: bridge
